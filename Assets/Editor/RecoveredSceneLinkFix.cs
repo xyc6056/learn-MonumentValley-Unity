@@ -32,6 +32,7 @@ public static class RecoveredSceneLinkFix
         changed |= EnsureLink(nodes, "0", "18final");
         changed |= EnsureLink(nodes, "3 (19)", "8stair (3)");
         changed |= EnsureLink(nodes, "middle (227)", "l_1 (19)");
+        changed |= EnsureAllLinks(walkables, "l_1 (19)", "l_1 (21)");
 
         if (!changed)
             return;
@@ -61,6 +62,32 @@ public static class RecoveredSceneLinkFix
     }
 
     private static bool AddMissingEdge(Walkable from, Walkable to)
+    private static bool EnsureAllLinks(
+        Walkable[] walkables,
+        string firstName,
+        string secondName)
+    {
+        bool changed = false;
+        for (int i = 0; i < walkables.Length; i++)
+        {
+            Walkable first = walkables[i];
+            if (first == null || first.name != firstName)
+                continue;
+
+            for (int j = 0; j < walkables.Length; j++)
+            {
+                Walkable second = walkables[j];
+                if (second == null || second.name != secondName)
+                    continue;
+
+                changed |= AddMissingEdge(first, second);
+                changed |= AddMissingEdge(second, first);
+            }
+        }
+
+        return changed;
+    }
+
     {
         for (int i = 0; i < from.possiblePaths.Count; i++)
         {
