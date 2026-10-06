@@ -31,6 +31,7 @@ public static class RecoveredSceneLinkFix
         bool changed = false;
         changed |= EnsureLink(nodes, "0", "18final");
         changed |= EnsureLink(nodes, "3 (19)", "8stair (3)");
+        changed |= EnsureLink(nodes, "middle (227)", "l_1 (19)");
 
         if (!changed)
             return;
