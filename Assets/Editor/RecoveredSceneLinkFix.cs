@@ -15,6 +15,9 @@ public static class RecoveredSceneLinkFix
     [MenuItem("Tools/Monument Valley/Fix Recovered Scene Links")]
     public static void Apply()
     {
+        if (EditorApplication.isPlayingOrWillChangePlaymode)
+            return;
+
         Scene scene = SceneManager.GetActiveScene();
         if (!scene.IsValid() || !scene.name.StartsWith("Scene 2"))
             return;
@@ -61,7 +64,6 @@ public static class RecoveredSceneLinkFix
         return changed;
     }
 
-    private static bool AddMissingEdge(Walkable from, Walkable to)
     private static bool EnsureAllLinks(
         Walkable[] walkables,
         string firstName,
@@ -88,6 +90,7 @@ public static class RecoveredSceneLinkFix
         return changed;
     }
 
+    private static bool AddMissingEdge(Walkable from, Walkable to)
     {
         for (int i = 0; i < from.possiblePaths.Count; i++)
         {
