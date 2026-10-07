@@ -11,7 +11,7 @@ public static class MonumentValleyEditorSetup
     private const string ResourcesFolder = "Assets/Resources";
     private const string LevelsFolder = "Assets/Resources/Levels";
     private const string SampleScenePath = ScenesFolder + "/SampleScene.unity";
-    private const string Level02ScenePath = ScenesFolder + "/Level02.unity";
+    private const string Level02ScenePath = ScenesFolder + "/Scene 2.unity";
     private const string CatalogPath = ResourcesFolder + "/LevelCatalog.asset";
     private const string Level01Path = LevelsFolder + "/Level01.asset";
     private const string Level02Path = LevelsFolder + "/Level02.asset";
@@ -256,7 +256,7 @@ public static class MonumentValleyEditorSetup
 
         level02.levelId = "level-02";
         level02.displayName = "Level 02";
-        level02.sceneName = "Level02";
+        level02.sceneName = "Scene 2";
         level02.nextLevel = null;
 
         LevelCatalog catalog = AssetDatabase.LoadAssetAtPath<LevelCatalog>(CatalogPath);

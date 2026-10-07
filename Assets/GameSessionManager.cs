@@ -167,6 +167,16 @@ public class GameSessionManager : MonoBehaviour
             ui.HideLevelSelect();
     }
 
+    public void QuitGame()
+    {
+        IsPaused = false;
+
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
+    }
     public void ResetProgress()
     {
         PlayerPrefs.DeleteKey(HighestUnlockedKey);
@@ -224,7 +234,7 @@ public class GameSessionManager : MonoBehaviour
         second.name = "Level 02";
         second.levelId = "level-02";
         second.displayName = "Level 02";
-        second.sceneName = "Level02";
+        second.sceneName = "Scene 2";
 
         first.nextLevel = second;
 

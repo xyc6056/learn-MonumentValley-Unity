@@ -6,6 +6,16 @@ using UnityEngine.UI;
 
 public class LevelUIController : MonoBehaviour
 {
+    private static readonly Color PanelBackdrop = new Color(.045f, .025f, .085f, .76f);
+    private static readonly Color CardBackground = new Color(.14f, .075f, .24f, .98f);
+    private static readonly Color HudBackground = new Color(.06f, .035f, .12f, .78f);
+    private static readonly Color AccentPink = new Color(.93f, .43f, .80f, 1f);
+    private static readonly Color ButtonNormal = new Color(.58f, .28f, .78f, 1f);
+    private static readonly Color ButtonHover = new Color(.89f, .48f, .78f, 1f);
+    private static readonly Color ButtonPressed = new Color(.44f, .20f, .62f, 1f);
+    private static readonly Color DisabledButton = new Color(.28f, .22f, .34f, .75f);
+    private static readonly Color BodyText = new Color(.96f, .92f, 1f, 1f);
+    private static readonly Color MutedText = new Color(.82f, .75f, .92f, 1f);
     private GameSessionManager session;
     private Font font;
 
@@ -131,7 +141,7 @@ public class LevelUIController : MonoBehaviour
 
     private void BuildFadeOverlay()
     {
-        GameObject overlay = CreatePanel("Fade", transform, new Color(.07f, .02f, .12f, 0f));
+        GameObject overlay = CreatePanel("Fade", transform, new Color(.03f, .015f, .06f, 0f));
         fadeOverlay = overlay.GetComponent<Image>();
         fadeOverlay.raycastTarget = false;
         overlay.SetActive(false);
@@ -211,31 +221,37 @@ public class LevelUIController : MonoBehaviour
 
     private void BuildHud()
     {
-        RectTransform hud = CreateRect("HUD", transform, new Vector2(0f, 1f), new Vector2(1f, 1f), Vector2.zero, new Vector2(0f, 110f));
-        hud.pivot = new Vector2(.5f, 1f);
-        hud.anchoredPosition = Vector2.zero;
+        RectTransform hud = CreateRect("HUD", transform, new Vector2(0f, 1f), new Vector2(0f, 1f), new Vector2(16f, -6f), new Vector2(420f, 74f));
+        hud.pivot = new Vector2(0f, 1f);
+
+        Image hudBackground = hud.gameObject.AddComponent<Image>();
+        hudBackground.color = HudBackground;
+        hudBackground.raycastTarget = false;
+
+        RectTransform accent = CreateRect("Accent", hud, new Vector2(0f, 0f), new Vector2(1f, 0f), Vector2.zero, new Vector2(0f, 3f));
+        Image accentImage = accent.gameObject.AddComponent<Image>();
+        accentImage.color = AccentPink;
+        accentImage.raycastTarget = false;
 
         levelNameText = CreateText(
             "Level Name",
             hud,
             "Level 01",
-            30,
+            28,
             TextAnchor.MiddleLeft,
-            new Vector2(30f, -24f),
-            new Vector2(380f, 56f),
-            new Vector2(0f, 1f));
+            new Vector2(20f, 0f),
+            new Vector2(280f, 52f),
+            new Vector2(0f, .5f));
 
-        CreateButton("Restart", hud, "Restart", new Vector2(-330f, -24f), new Vector2(130f, 52f), () => session.RestartCurrentLevel());
-        CreateButton("Levels", hud, "Levels", new Vector2(-190f, -24f), new Vector2(130f, 52f), () => session.ShowLevelSelect());
-        CreateButton("Pause", hud, "Pause", new Vector2(-50f, -24f), new Vector2(130f, 52f), () => session.TogglePause());
+        CreateButton("Pause", hud, "Pause", new Vector2(352f, 0f), new Vector2(96f, 42f), () => session.TogglePause());
     }
 
     private void BuildCompletionPanel()
     {
-        completionPanel = CreatePanel("Completion", transform, new Color(0.03f, 0.05f, 0.06f, .74f));
+        completionPanel = CreatePanel("Completion", transform, PanelBackdrop);
         completionPanel.SetActive(false);
 
-        RectTransform card = CreatePanelCard("Completion Card", completionPanel.transform, new Vector2(520f, 300f));
+        RectTransform card = CreatePanelCard("Completion Card", completionPanel.transform, new Vector2(600f, 320f));
         completionTitleText = CreateText(
             "Title",
             card,
@@ -246,25 +262,27 @@ public class LevelUIController : MonoBehaviour
             new Vector2(460f, 70f),
             new Vector2(.5f, .5f));
 
-        nextButton = CreateButton("Next", card, "Next", new Vector2(-130f, -50f), new Vector2(150f, 60f), () => session.LoadNextLevel());
-        CreateButton("Retry", card, "Retry", new Vector2(40f, -50f), new Vector2(150f, 60f), () => session.RestartCurrentLevel());
-        CreateButton("Levels", card, "Levels", new Vector2(210f, -50f), new Vector2(150f, 60f), () => session.ShowLevelSelect());
+        nextButton = CreateButton("Next", card, "Next", new Vector2(-190f, -55f), new Vector2(170f, 60f), () => session.LoadNextLevel());
+        CreateButton("Retry", card, "Retry", new Vector2(0f, -55f), new Vector2(170f, 60f), () => session.RestartCurrentLevel());
+        CreateButton("Levels", card, "Levels", new Vector2(190f, -55f), new Vector2(170f, 60f), () => session.ShowLevelSelect());
     }
 
     private void BuildPausePanel()
     {
-        pausePanel = CreatePanel("Pause", transform, new Color(0.03f, 0.05f, 0.06f, .74f));
+        pausePanel = CreatePanel("Pause", transform, PanelBackdrop);
         pausePanel.SetActive(false);
 
-        RectTransform card = CreatePanelCard("Pause Card", pausePanel.transform, new Vector2(440f, 280f));
-        CreateText("Title", card, "Paused", 40, TextAnchor.MiddleCenter, new Vector2(0f, 70f), new Vector2(380f, 60f), new Vector2(.5f, .5f));
-        CreateButton("Resume", card, "Resume", new Vector2(0f, -20f), new Vector2(220f, 60f), () => session.TogglePause());
-        CreateButton("Restart", card, "Restart", new Vector2(0f, -95f), new Vector2(220f, 60f), () => session.RestartCurrentLevel());
+        RectTransform card = CreatePanelCard("Pause Card", pausePanel.transform, new Vector2(480f, 340f));
+        CreateText("Title", card, "Paused", 40, TextAnchor.MiddleCenter, new Vector2(0f, 105f), new Vector2(400f, 60f), new Vector2(.5f, .5f));
+        CreateButton("Resume", card, "Resume", new Vector2(-105f, 30f), new Vector2(190f, 56f), () => session.TogglePause());
+        CreateButton("Restart", card, "Restart", new Vector2(105f, 30f), new Vector2(190f, 56f), () => session.RestartCurrentLevel());
+        CreateButton("Levels", card, "Levels", new Vector2(-105f, -48f), new Vector2(190f, 56f), () => session.ShowLevelSelect());
+        CreateButton("Quit", card, "Quit", new Vector2(105f, -48f), new Vector2(190f, 56f), () => session.QuitGame());
     }
 
     private void BuildLevelSelectPanel()
     {
-        levelSelectPanel = CreatePanel("Level Select", transform, new Color(0.03f, 0.05f, 0.06f, .84f));
+        levelSelectPanel = CreatePanel("Level Select", transform, PanelBackdrop);
         levelSelectPanel.SetActive(false);
 
         RectTransform card = CreatePanelCard("Level Select Card", levelSelectPanel.transform, new Vector2(660f, 480f));
@@ -285,7 +303,14 @@ public class LevelUIController : MonoBehaviour
     {
         RectTransform card = CreateRect(name, parent, new Vector2(.5f, .5f), new Vector2(.5f, .5f), Vector2.zero, size);
         Image image = card.gameObject.AddComponent<Image>();
-        image.color = new Color(0.07f, 0.12f, 0.13f, .98f);
+        image.color = CardBackground;
+
+        RectTransform accent = CreateRect("Accent", card, new Vector2(0f, 1f), new Vector2(1f, 1f), Vector2.zero, new Vector2(0f, 5f));
+        accent.pivot = new Vector2(.5f, 1f);
+        Image accentImage = accent.gameObject.AddComponent<Image>();
+        accentImage.color = AccentPink;
+        accentImage.raycastTarget = false;
+
         return card;
     }
 
@@ -313,7 +338,7 @@ public class LevelUIController : MonoBehaviour
         text.text = value;
         text.fontSize = size;
         text.alignment = anchor;
-        text.color = new Color(0.92f, 0.95f, 0.91f, 1f);
+        text.color = BodyText;
         text.horizontalOverflow = HorizontalWrapMode.Wrap;
         text.verticalOverflow = VerticalWrapMode.Overflow;
         return text;
@@ -329,17 +354,17 @@ public class LevelUIController : MonoBehaviour
     {
         RectTransform rect = CreateRect(name, parent, new Vector2(.5f, .5f), new Vector2(.5f, .5f), position, dimensions);
         Image image = rect.gameObject.AddComponent<Image>();
-        image.color = new Color(0.11f, 0.45f, 0.42f, 1f);
+        image.color = Color.white;
 
         Button button = rect.gameObject.AddComponent<Button>();
         button.targetGraphic = image;
         button.navigation = new Navigation { mode = Navigation.Mode.None };
 
         ColorBlock colors = button.colors;
-        colors.normalColor = Color.white;
-        colors.highlightedColor = new Color(0.78f, 1f, .95f, 1f);
-        colors.pressedColor = new Color(0.65f, .88f, .86f, 1f);
-        colors.disabledColor = new Color(.35f, .38f, .38f, .8f);
+        colors.normalColor = ButtonNormal;
+        colors.highlightedColor = ButtonHover;
+        colors.pressedColor = ButtonPressed;
+        colors.disabledColor = DisabledButton;
         button.colors = colors;
 
         Text text = CreateText("Label", rect, label, 22, TextAnchor.MiddleCenter, Vector2.zero, dimensions, new Vector2(.5f, .5f));

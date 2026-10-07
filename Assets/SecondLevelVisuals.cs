@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.UI;
 
 public static class SecondLevelVisuals
 {
@@ -16,6 +17,7 @@ public static class SecondLevelVisuals
         ConfigureLighting();
         ConfigureShadows();
         CreateGradientBackground();
+        CreateEnvironmentGrain();
     }
 
     private static void RemoveDecorations()
@@ -140,6 +142,65 @@ public static class SecondLevelVisuals
         renderer.reflectionProbeUsage = ReflectionProbeUsage.Off;
     }
 
+    private static void CreateEnvironmentGrain()
+    {
+        if (GameObject.Find("Environment Grain Overlay") != null)
+            return;
+
+        Camera camera = FindMainCamera();
+        if (camera == null)
+            return;
+
+        GameObject overlay = new GameObject(
+            "Environment Grain Overlay",
+            typeof(RectTransform),
+            typeof(Canvas),
+            typeof(CanvasGroup),
+            typeof(RawImage));
+
+        RectTransform rect = overlay.GetComponent<RectTransform>();
+        rect.SetParent(camera.transform, false);
+        rect.anchorMin = Vector2.zero;
+        rect.anchorMax = Vector2.one;
+        rect.offsetMin = Vector2.zero;
+        rect.offsetMax = Vector2.zero;
+
+        Canvas canvas = overlay.GetComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        canvas.sortingOrder = 20;
+
+        CanvasGroup group = overlay.GetComponent<CanvasGroup>();
+        group.alpha = .38f;
+        group.blocksRaycasts = false;
+        group.interactable = false;
+
+        RawImage image = overlay.GetComponent<RawImage>();
+        image.texture = CreateGrainTexture(256);
+        image.color = new Color(1f, .97f, 1f, .12f);
+        image.raycastTarget = false;
+    }
+
+    private static Texture2D CreateGrainTexture(int size)
+    {
+        Texture2D texture = new Texture2D(size, size, TextureFormat.RGBA32, false);
+        texture.name = "Environment Grain";
+        texture.wrapMode = TextureWrapMode.Repeat;
+        texture.filterMode = FilterMode.Bilinear;
+        texture.anisoLevel = 0;
+
+        System.Random random = new System.Random(1701);
+        Color32[] pixels = new Color32[size * size];
+        for (int i = 0; i < pixels.Length; i++)
+        {
+            byte value = (byte)random.Next(150, 256);
+            byte alpha = (byte)random.Next(0, 56);
+            pixels[i] = new Color32(value, value, value, alpha);
+        }
+
+        texture.SetPixels32(pixels);
+        texture.Apply(false, true);
+        return texture;
+    }
     private static Mesh CreateQuadMesh()
     {
         Mesh mesh = new Mesh();
