@@ -1,6 +1,6 @@
 # Monument Valley Style Unity Puzzle Game
 
-一个《纪念碑谷》风格的非欧几何解谜游戏课程项目。
+一个《纪念碑谷》风格的非欧几何解谜游戏项目，参考并基于 Mix and Jam 的 Monument Valley Level Design 开源项目继续开发和整理尝试。
 
 项目经历了两个阶段：
 
