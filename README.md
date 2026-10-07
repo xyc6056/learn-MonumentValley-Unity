@@ -93,3 +93,7 @@ Builds/                  Windows 构建产物，默认不上传 Git
 ## 来源说明
 
 本项目最初参考并基于 Mix and Jam 的 Monument Valley Level Design 开源项目继续开发和整理。当前仓库中的第二阶段 Unity 原型、关卡流程、UI、视觉调整、构建脚本和课程文档为本人项目实践内容。
+
+## 其他
+
+更多详细介绍可见Docs/MonumentValley_Project_Report.md
