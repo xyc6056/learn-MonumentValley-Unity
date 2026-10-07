@@ -37,3 +37,8 @@ sysinfo.txt
 *.apk
 *.unitypackage
 "node_modules/" 
+
+# Phase 1 Python
+Phase1-Python/__pycache__/
+Phase1-Python/.idea/
+Phase1-Python/*.pyc
