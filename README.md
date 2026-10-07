@@ -10,7 +10,6 @@
 ## 项目文档
 
 - [项目汇报文档](Docs/MonumentValley_Project_Report.md)
-- [PPT 大纲](Docs/MonumentValley_PPT_Outline.md)
 
 ## 当前功能
 
@@ -86,7 +85,7 @@ Builds/Windows/MonumentValley.exe
 Assets/                  Unity 资源、脚本和场景
 ProjectSettings/         Unity 项目设置
 Packages/                Unity 包配置
-Docs/                    项目汇报和 PPT 大纲
+Docs/                    项目汇报
 Phase1-Python/           Python + PyOpenGL 第一阶段代码
 Builds/                  Windows 构建产物，默认不上传 Git
 ```
